@@ -33,9 +33,18 @@ export const postRecipe = async (req, res, next) =>{
 
 // Patch Recipe
 
-export const patchRecipe = (req, res) =>{
-    res.json(`Recipe with ID ${req.params.id} updated`);
+export const patchRecipe = async (req, res, next) =>{
+    try {
+        const patchRecipe = await RecipeModel.findModel.findByIdAndUpdate(req.params.id);
+        res.json(`Recipe with ID ${req.params.id} updated`);
+
+    } catch (error) {
+        newRecipe(error);
+    }
+    
 }
+
+
 
 
 // Delete Recipe 
