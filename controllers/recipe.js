@@ -35,8 +35,12 @@ export const postRecipe = async (req, res, next) =>{
 
 export const patchRecipe = async (req, res, next) =>{
     try {
-        const patchRecipe = await RecipeModel.findModel.findByIdAndUpdate(req.params.id);
-        res.json(`Recipe with ID ${req.params.id} updated`);
+
+        // Updated recipe by id
+        const updatedRecipe = await RecipeModel.findByIdAndUpdate(req.params.id, req.body);
+        
+        // Return response
+        res.json(updatedRecipe);
 
     } catch (error) {
         newRecipe(error);
@@ -51,9 +55,9 @@ export const patchRecipe = async (req, res, next) =>{
 export const deleteRecipe =async (req, res, next) =>{
     try {
         // Delete recipe by id
-        const deleteRecipe = await RecipeModel.findByIdAndDelete(req.params.id);
+        const deletedRecipe = await RecipeModel.findByIdAndDelete(req.params.id);
         // Return response
-        res.json(deleteRecipe);
+        res.json(delete+Recipe);
     } catch (error) {
         next(error);
     }

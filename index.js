@@ -3,13 +3,19 @@ import mongoose from "mongoose";
 import recipeRouter from "./routes/recipe.js";
 import 'dotenv/config';
 import categoryRouter from "./routes/category.js";
+import expressOasGenerator from "express-oas-generator";
 
 
 
 // Connect to database
 await mongoose.connect(process.env.MONGO_URL)
+
 // create Express App
 const app = express();
+expressOasGenerator.handleResponses(app, {
+    tags: ['categories', 'recipes'],
+    mongooseModels: mongoose.modelNames(),
+});
 
 
 //Apply middlewares
@@ -20,6 +26,8 @@ app.use(express.json());
 // Use routes
 app.use(recipeRouter);
 app.use(categoryRouter);
+expressOasGenerator.handleRequests();
+app.use((req, res) => res.redirect('/api-docs/'));
 
 // Listen for incoming requests
 app.listen(3000, () =>{
