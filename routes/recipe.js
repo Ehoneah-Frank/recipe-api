@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { getRecipes, postRecipe, patchRecipe, deleteRecipe, getRecipe } from "../controllers/recipe.js";
+import { localUpload } from "../middlewares/upload.js";
 
 
 // Create router
@@ -8,7 +9,7 @@ const recipeRouter = Router();
 // Define routes
 recipeRouter.get('/recipes', getRecipes);
 
-recipeRouter.post('/recipes', postRecipe);
+recipeRouter.post('/recipes', localUpload.single('image'), postRecipe);
 
 recipeRouter.patch('/recipes/:id', patchRecipe);
 

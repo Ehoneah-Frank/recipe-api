@@ -7,8 +7,14 @@ RecipeModel
 // Get all recipes
 export const getRecipes = async (req, res, next) => {
     try {
+        // Get query params
+        const { limit, skip, search } = req.query;
         // Get all recipes from database
-        const allRecipes = await RecipeModel.find();
+        const allRecipes = await RecipeModel
+            .find({ name: search })
+            .limit(limit)
+            .skip(skip);
+
         // Return all recipes as response
         res.json(allRecipes);
     } catch (error) {
@@ -20,10 +26,15 @@ export const getRecipes = async (req, res, next) => {
 
 // Post recipe
 
-export const postRecipe = async (req, res, next) =>{
+export const postRecipe = async (req, res, next) => {
     try {
+
+
         // Add recipe to database
-        const newRecipe = await RecipeModel.create(req.body);
+        const newRecipe = await RecipeModel.create({
+            ...req.body,
+            image: req.file.filename
+        });
         res.json(newRecipe);
     } catch (error) {
         next(error);
@@ -33,31 +44,31 @@ export const postRecipe = async (req, res, next) =>{
 
 // Patch Recipe
 
-export const patchRecipe = async (req, res, next) =>{
+export const patchRecipe = async (req, res, next) => {
     try {
 
         // Updated recipe by id
         const updatedRecipe = await RecipeModel.findByIdAndUpdate(req.params.id, req.body);
-        
+
         // Return response
         res.json(updatedRecipe);
 
     } catch (error) {
         newRecipe(error);
     }
-    
+
 }
 
 
 
 
 // Delete Recipe 
-export const deleteRecipe =async (req, res, next) =>{
+export const deleteRecipe = async (req, res, next) => {
     try {
         // Delete recipe by id
         const deletedRecipe = await RecipeModel.findByIdAndDelete(req.params.id);
         // Return response
-        res.json(delete+Recipe);
+        res.json(delete +Recipe);
     } catch (error) {
         next(error);
     }
@@ -65,6 +76,6 @@ export const deleteRecipe =async (req, res, next) =>{
 
 
 //  Get Recipe
-export const getRecipe = (req, res) =>{
+export const getRecipe = (req, res) => {
     res.json(`Recipe with ID ${req.params.id} is shown`);
 }
