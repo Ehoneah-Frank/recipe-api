@@ -4,8 +4,21 @@ import { CategoryModel } from "../models/category.js";
 
 export const getCategories = async (req, res, next) => {
     try {
+        // Get query params
+        const {
+            filter = "{}",
+            fields = "{}",
+            limit = 10,
+            skip = 0,
+            sort = 0 } = req.query;
+
         // Get all category from database
-        const allCAtegories = await CategoryModel.find();
+        const allCAtegories = await CategoryModel
+            .find(JSON.parse(filter))
+            .select(JSON.parse(fields))
+            .limit(limit)
+            .skip(skip);
+
         // Return response
         res.json(allCAtegories);
 

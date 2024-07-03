@@ -4,6 +4,7 @@ import recipeRouter from "./routes/recipe.js";
 import 'dotenv/config';
 import categoryRouter from "./routes/category.js";
 import expressOasGenerator from "express-oas-generator";
+import cors from "cors";
 
 
 
@@ -20,8 +21,10 @@ expressOasGenerator.handleResponses(app, {
 
 
 //Apply middlewares
+app.use(cors());
 app.use(express.json());
 app.use(express.static('uploads'));
+
 
 
 
